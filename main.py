@@ -3,6 +3,7 @@ import sys
 tokens = []
 lumptokens = []
 variables = []
+defenitions = []
 
 class SyntaxIdentifiers:
 	comment_ident  = '%'
@@ -29,7 +30,7 @@ class fileFunctions:
 				if file[i][j] == "":
 					file[i].remove(file[i][j])
 
-		return file
+		return file 
 
 	def complete(self):
 		if len(sys.argv) > 1:
@@ -111,7 +112,13 @@ def main():
 
 	# Build Lump Tokens
 	tokpos = 0
-	global lumptokens
+	global lumptokens, defenitions
+
+	defstate = False
+	currentDef = []
+
+	lumptoken = None
+
 	while tokpos < len(tokens):
 		token = tokens[tokpos]
 		if token.t == "set":
@@ -126,28 +133,40 @@ def main():
 						tokpos += 1
 						token = tokens[tokpos]
 						if token.t == "int":
-							lumptokens.append(LumpToken(t="setvar", n=varname, v=token.v))
+							lumptoken = LumpToken(t="setvar", n=varname, v=token.v)
+						elif token.t == "var":
+							lumptoken = LumpToken(t="setvarasvar", n=varname, v=token.v)
 						else:
-							print("ERROR: Expected a int declaration after SETAS ':' | Line:{}, Pos:{}".format(token.l+1, token.p))		
+							print("ERROR: Expected a VariableType declaration after SETAS ':' | Line:{}, Pos:{}".format(token.l+1, token.p))		
 							break
 					else:
 						tokpos -= 1
-						lumptokens.append(LumpToken(t="setvar", n=varname, v=None))
+						lumptoken = LumpToken(t="setvar", n=varname, v=None)
 				except IndexError:
 					tokpos -= 1
-					lumptokens.append(LumpToken(t="setvar", n=varname, v=None))
+					lumptoken = LumpToken(t="setvar", n=varname, v=None)
 			else:
 				print("ERROR: Expected a variable declaration after SET | Line:{}, Pos:{}".format(token.l+1, token.p))
 				break
 
+		if lumptoken != None:
+			if (defstate == True):
+				currentDef.append(lumptoken)
+			else:
+				lumptokens.append(lumptoken)
+
 		tokpos += 1
 
+def exe(ltokens):
 	# Final Execute script
 	ltokpos = 0
-	while ltokpos < len(lumptokens):
-		ltoken = lumptokens[ltokpos]
-		print(ltoken.t)
+	while ltokpos < len(ltokens):
+		ltoken = ltokens[ltokpos]
+		# print(ltoken.t) # DEBUG
 		if ltoken.t == "setvar":
+			updatevar(ltoken)
+		elif ltoken.t == "setvarasvar":
+			ltoken.v = searchvar(ltoken.v)
 			updatevar(ltoken)
 
 		ltokpos += 1
@@ -166,8 +185,15 @@ def updatevar(lumptoken):
 	if vex == False:
 		variables.append([lumptoken.n, lumptoken.v])
 
+def searchvar(varname):
+	for i in range(0, len(variables)):
+		if variables[i][0] == varname:
+			return variables[i][1]
+	print("Variable not found: Value:Null")
+	return None
 
 main()
+exe(lumptokens)
 
 print(variables)
 
