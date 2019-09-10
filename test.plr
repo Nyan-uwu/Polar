@@ -1,0 +1,3 @@
+echotag false
+set $var4 : input
+echo $var4

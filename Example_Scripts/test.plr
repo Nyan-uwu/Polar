@@ -1,4 +1,5 @@
 set $var : int 100
 set $var2
 
+set $var2 : $var
 set $var : int 200
