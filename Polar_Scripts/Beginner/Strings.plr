@@ -1,0 +1,6 @@
+% Strings
+
+set $my_string : str "Hello, World!"
+echo $my_string
+
+echo "Hello, World!"

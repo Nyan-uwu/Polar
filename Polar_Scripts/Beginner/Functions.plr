@@ -1,0 +1,12 @@
+% Functions
+
+* turnofftag
+| echotag false
+
+* whatsyourname
+| set $your_name : input
+| echo "Your Name Is:"
+| echo $your_name
+
+go *turnofftag
+go *whatsyourname

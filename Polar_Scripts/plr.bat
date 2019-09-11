@@ -1,2 +1,2 @@
 @echo off
-py ../Python_Scripts/main.py %1
+py ../Python_Scripts/plr.py %1
