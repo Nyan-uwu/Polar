@@ -1,0 +1,30 @@
+% Polar - Learn to Use
+
+% Variables and Echo
+% Variables in polar start with a '$', Similar to PHP.
+% Variables are also global, so can be defined in a function and be used in another.
+
+% Example: $my_var.
+% To set a valur to this variable, we need to use the set command.
+
+set $my_var
+
+% By using the above, You will set a variable with a null value.
+% This can be usefull if you do not want to use the variable yet.
+
+% To apply a value to the variable, you must do the following.
+
+set $my_var : int 1
+
+% The above uses the set command, and the : to define what to be set to.
+% Now $my_var is set to 1.
+
+% In polar, you must define the type of a value when setting it.
+% Lets use the 'echo' command to print it to the screen.
+
+echo $my_var
+
+% The above can also be written as 'echo : $my_var'
+% Run this script to see the output of 1 int the Command line.
+
+% Quick Tip - Polar is case insensetive, so you do not need to worry about cases when writing your code.

@@ -1,0 +1,16 @@
+% Functions
+
+* turnofftag
+| echotag : false
+
+* setmyvar
+| set $my_var : int 10
+| echo $my_var
+
+* whatsyourname
+| set $your_name : input
+| echo $your_name
+
+go *turnofftag
+go *setmyvar
+go *whatsyourname
